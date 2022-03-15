@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.autobots.automanager.entidades.Cliente;
 import com.autobots.automanager.entidades.Documento;
+import com.autobots.automanager.modelo.ClienteSelecionador;
 import com.autobots.automanager.modelo.DocumentoSelecionador;
 import com.autobots.automanager.repositorios.ClienteRepositorio;
 import com.autobots.automanager.repositorios.DocumentoRepositorio;
@@ -27,8 +28,13 @@ public class DocumentoControle {
   private DocumentoSelecionador selecionarDocumento;
   
   @Autowired
-private ClienteRepositorio repositorioCliente;
-
+  private ClienteRepositorio clienteRepositorio;
+  
+  
+  @Autowired
+  private ClienteSelecionador clienteSelecionador;
+  
+  
   @GetMapping("/documentos")
   public List<Documento> obterDocumento() {
 	  List<Documento> documento =RepositorioDocumento.findAll();
@@ -42,13 +48,16 @@ private ClienteRepositorio repositorioCliente;
   }
 
   @PutMapping("/cadastro")
-  public void cadastrarDocumento(@RequestBody Documento documento) {
-    RepositorioDocumento.save(documento);
+  public void cadastrarDocumento(@RequestBody Cliente cliente) {
+	 List<Cliente> clientes = clienteRepositorio.findAll();
+	 Cliente clienteAlvo = clienteSelecionador.selecionar(clientes, cliente.getId());
+	 clienteAlvo.getTelefones().addAll(cliente.getTelefones());
+	 clienteRepositorio.save(clienteAlvo);
   }
 
   @DeleteMapping("/excluir/{clienteId}/{documentoId}")
   public void deletarDocumento(@PathVariable long clienteId, @PathVariable long documentoId) {
-	  Cliente cliente = repositorioCliente.getById(clienteId);
+	  Cliente cliente = clienteRepositorio.getById(clienteId);
 	  List<Documento> listaDocumentos = cliente.getDocumentos();
 	  Documento findDocumento = null;
 	  for (Documento documento : listaDocumentos) {
@@ -57,7 +66,7 @@ private ClienteRepositorio repositorioCliente;
 		  }	  
 	}
 	listaDocumentos.remove(findDocumento);	  
-    repositorioCliente.save(cliente);	  
+	clienteRepositorio.save(cliente);	  
   }
 
 }

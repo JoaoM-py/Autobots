@@ -45,14 +45,17 @@ public class EnderecoControle {
     return selecionador.selecionar(enderecos, id);
   }
 
-  @PutMapping("/cadastro")
-  public void cadastrarCliente(@RequestBody Cliente cliente) {
+
+  @PutMapping("/alterar")
+  public void alterarCliente(@RequestBody Cliente cliente) {
     List<Cliente> clientes = repositorioCliente.findAll();
     Cliente selecionado = selecionadorCliente.selecionar(clientes, cliente.getId());
     selecionado.setEndereco(cliente.getEndereco());
     repositorioCliente.save(selecionado);
   }
-
+  
+  
+  
   @DeleteMapping("/excluir")
   public void deletarEndereco(@PathVariable long id) {
     List<Cliente> clientes = repositorioCliente.findAll();
