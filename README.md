@@ -7,7 +7,7 @@
 # :bookmark_tabs: Descrição
 Montando estrutura base para sistema CRUD de gestão de lojas especializadas em manutenção veicular e vendas de autopeças.
 
-### Explicação da estrutura das pastas
+### Estrutura das pastas
 
 | Pasta                                                     | Definição                                                                                      |
 | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
